@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <style scoped>
+            h1, h2 {
+                font-weight: normal;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                text-align: left;
+            }
+            li {
+                display: inline-block;
+                margin: 0 10px;
+                line-height: 50px;
+                cursor: pointer;
+            }
+            span{
+                display: inline-block;
+                float: left;
+                margin-left: 30px;
+                line-height: 50px;
+            }
+            #goods-search{
+                width: 900px;
+                height: 600px;
+                background: url("./src/bg.jpg") no-repeat;
+                margin: 0 auto;
+                position: relative;
+            }
+            .wrap1{
+                width: 100%;
+                position: absolute;
+                top: 100px;
+            }
+            .box{
+                margin: 0 auto;
+                width: 760px;
+                height: 50px;
+                background: url("./src/nav_bg.png") no-repeat;
+                text-align: left;
+            }
+            .search-option{
+                width: 760px;
+            }
+            .wrap2{
+                width: 100%;
+                position: absolute;
+                top: 150px;
+            }
+            .box2{
+                width: 760px;
+                height: 210px;
+                margin: 0 auto;
+                background: url("./src/type_bg.png") no-repeat;
+            }
+            .top {
+                padding-top: 10px;
+            }
+            .choice li{
+                line-height: 1;
+                border: 1px solid #28a5c4;
+                padding:2px 25px 2px 5px;
+                margin-top: 12px;
+                color: #28a5c4;
+                text-align: left;
+            }
+            .choice li:after{
+                content: 'X';
+                display: inline-block;
+                background: #28a5c4;
+                padding: 1px 2px;
+                color: #fff;
+                position: relative;
+                right: -20px;
+            }
+            .active{
+                color: #28a5c4;
+            }
+        </style>
+		<script src="./src/vue.js">
+        </script>
+	</head>
+	<body>
+		<div id="goods-search">
+			  <div class="wrap1">
+				<div class="box">
+				  <span>你的选择：</span>
+				  <ul class="choice">
+					<li v-for="(item,index) in choice" @click="deleteitem(item)" :key="index">{{item.val}}</li>
+				  </ul>
+				</div>
+			  </div>
+			  <div class="wrap2">
+                <div class="box2">
+                    <div class="search-option top">
+            <span>品牌：</span>
+            <ul ref="ul0">
+              <li v-for="(item,index) in tabData[0].list" @click="addtolist(0,item.subTitle,$event)" :key="index">{{item.subTitle}}</li>
+            </ul>
+          </div>
+                    <div class="search-option">
+            <span>尺寸：</span>
+            <ul ref="ul1">
+              <li v-for="(item,index) in tabData[1].list" @click="addtolist(1,item.subTitle,$event)" :key="index">{{item.subTitle}}</li>
+            </ul>
+          </div>
+                    <div class="search-option">
+            <span>系统：</span>
+            <ul ref="ul2">
+              <li v-for="(item,index) in tabData[2].list" @click="addtolist(2,item.subTitle,$event)" :key="index">{{item.subTitle}}</li>
+            </ul>
+          </div>
+                    <div class="search-option">
+            <span>网络：</span>
+            <ul ref="ul3">
+              <li v-for="(item,index) in tabData[3].list" @click="addtolist(3,item.subTitle,$event)" :key="index">{{item.subTitle}}</li>
+            </ul>
+          </div>
+                </div>
+              </div>
+		</div>
+        <script>
+        new Vue({
+            el: '#goods-search',
+            data: {
+                tabData: [
+                    {
+                        list: [
+                            {
+                                subTitle: '苹果'
+                            },
+                            {
+                                subTitle: '小米'
+                            },
+                            {
+                                subTitle: '锤子'
+                            },
+                            {
+                                subTitle: '魅族'
+                            },
+                            {
+                                subTitle: '华为'
+                            },
+                            {
+                                subTitle: '三星'
+                            }
+                        ]
+                    },
+                    {
+                        list: [
+                            {
+                                subTitle: '3.0尺寸以下'
+                            },
+                            {
+                                subTitle: '3.0-3.9尺寸'
+                            },
+                            {
+                                subTitle: '4.0-4.5尺寸'
+                            },
+                            {
+                                subTitle: '4.6-4.9尺寸'
+                            },
+                            {
+                                subTitle: '5.0-5.9尺寸'
+                            },
+                            {
+                                subTitle: '6.0尺寸以上'
+                            }
+                        ]
+                    },
+                    {
+                        list: [
+                            {
+                                subTitle: '安卓(Android)'
+                            },
+                            {
+                                subTitle: '苹果(IOS)'
+                            },
+                            {
+                                subTitle: '微软(windows)'
+                            },
+                            {
+                                subTitle: '无'
+                            },
+                            {
+                                subTitle: '其他'
+                            }
+                        ]
+                    },
+                    {
+                        list: [
+                            {
+                                subTitle: '联通3G'
+                            },
+                            {
+                                subTitle: '双卡单4G'
+                            },
+                            {
+                                subTitle: '双卡双4G'
+                            },
+                            {
+                                subTitle: '联通4G'
+                            },
+                            {
+                                subTitle: '电信4G'
+                            },
+                            {
+                                subTitle: '移动4G'
+                            }
+                        ]
+                    }
+                ],
+                choice: []
+            },
+            methods: {
+                deleteitem: function (item) {
+                    var index
+                    index = this.choice.indexOf(item)
+                    var ulindex = this.choice[index].index
+                    this.choice.splice(index, 1)
+                    // console.log(this.$refs['ul'+ulindex])
+                    this.$refs['ul' + ulindex].childNodes.forEach(function (item) {
+                        item.classList.remove('active')
+                    })
+                },
+                addtolist (index, val, event) {
+                    let tmp = this.choice.find(function (item) {
+                        return item.index === index
+                    })
+                    if (!tmp) {
+                        this.choice.push({index, val})
+                        event.target.classList.add('active')
+                    } else {
+                        this.choice.find(function (item) {
+                            if (item.index === index) {
+                                item.val = val
+                                let t = event.target.parentNode.childNodes
+                                t.forEach(function (item) {
+                                    item.classList.remove('active')
+                                })
+                                event.target.classList.add('active')
+                            }
+                        })
+                    }
+                }
+            }
+        })
+    </script>
+	</body>
+</html>
